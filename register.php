@@ -10,7 +10,8 @@ $email=$_POST['email'];
 if($password!=$confirm)
   err("Введёные пароли не совпадают!");
 
-if(!preg_match("/^[\w\.\d-]+@(qwerty\.ru|qwertyru\.ru|peredelkino\.ru)$/i",$email))
+#if(!preg_match("/^[\w\.\d-]+@(qwerty\.ru|qwertyru\.ru|peredelkino\.ru)$/i",$email))
+if(!checkemail($email))
   err("Неправильный e-mail $email");
 
 
@@ -46,7 +47,7 @@ mysql_query("INSERT INTO regs (nick,email,secret,pwd) VALUES (".sqlesc($nick).",
 
 $link = mklink($nick,$pwd,$secret);
 $body= <<<EOF
-Вы запросили регистрацию на QWERTY hub пользователя $nick.
+Вы запросили регистрацию на $name пользователя $nick.
 
 Если вы этого не делали, просто проигнорируйте это письмо. Запрос был отправлен с адреса {$_SERVER["REMOTE_ADDR"]}. Пожалуйста, не отвечайте на это письмо - оно было послано автоматически.
 
@@ -59,7 +60,7 @@ $link
 EOF
 ;
 
-mail($email, "QWERTY Hub registration confirmation", $body, "From: QWERTYbot <qwerty@qwertyclub.net>\r\nContent-Type: text/plain; charset=Windows-1251", "-fqwerty@qwertyclub.net");
+mail($email, "QWERTY Hub registration confirmation", $body, "From: $name <$from>\r\nContent-Type: text/plain; charset=Windows-1251", "-f$from");
 
 header("Content-Type: text/html; charset=Windows-1251");
 print("Подтверждение регистрации отправлено на адрес $email, проверяйте почту.");

@@ -22,6 +22,6 @@ if($secret != "") {
   print("Этот ник уже прошёл подтверждение по e-mail.<br>");
 }
 
-$regdate=mktime();
+$regdate=time();
 mysql_query("INSERT INTO `reglist` (`nick`,`class`,`reg_op`,`reg_date`,login_pwd,pwd_crypt,pwd_change) values(".sqlesc($nick).",1,'QWERTYbot','$regdate',".sqlesc($pwd).",1,0)") or print "Ошибка регистрации ника на хабе!";
 ?>
