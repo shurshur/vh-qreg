@@ -26,7 +26,7 @@ $res = mysql_query("SELECT * FROM reglist,regs WHERE reglist.nick=regs.nick AND 
 if(mysql_num_rows($res)>0) {
   print("На этот email уже регистрировался по крайней мере один ник. Все ники, кроме первого, требуют ручного утверждения администратором хаба.");
 } else {
-  $regdate=mktime();
+  $regdate=time();
   mysql_query("INSERT INTO `reglist` (`nick`,`class`,`reg_op`,`reg_date`,login_pwd,pwd_crypt,pwd_change) values(".sqlesc($nick).",1,'QWERTYbot','$regdate',".sqlesc($pwd).",1,0)") or print "Ошибка регистрации ника на хабе!";
 }
 
