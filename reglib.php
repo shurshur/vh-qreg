@@ -2,6 +2,26 @@
 
 include_once("config.php");
 
+if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) || isset($_SERVER['HTTP_X_REAL_IP'])) {
+  foreach(array('HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP') as $key => $value) {
+    if(
+      isset($_SERVER[$value])
+      && strlen($_SERVER[$value]) > 0
+      && strpos($_SERVER[$value], "127.") !== 0
+    ) {
+      if($p = strrpos($_SERVER[$value], ",")) 
+      { 
+        $_SERVER["REMOTE_ADDR"] = $REMOTE_ADDR = trim(substr($_SERVER[$value], $p+1)); 
+        $_SERVER["HTTP_X_FORWARDED_FOR"] = substr($_SERVER[$value], 0, $p); 
+      } 
+      else 
+        $_SERVER["REMOTE_ADDR"]= $REMOTE_ADDR = $_SERVER[$value]; 
+      
+      break;
+    }
+  }
+}
+
 function mksecret($len = 20) {
   $ret = "";
   for ($i = 0; $i < $len; $i++)
@@ -9,12 +29,12 @@ function mksecret($len = 20) {
   return $ret;
 }
 
-function mklink($nick,$pass,$secret) {
+function mklink($loc,$nick,$pass,$secret) {
   global $base;
   $s = md5($secret.$pass.$secret);
   # escape!
   $nick=urlencode($nick);
-  return $base."/confirm.php?nick=$nick&secret=$s";
+  return $base."/$loc?nick=".urlencode($nick)."&secret=$s";
 }
 
 function mkpass($pass) {

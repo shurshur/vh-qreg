@@ -8,34 +8,14 @@ include("reglib.php");
 Ник: <input type=text name=nick value="Ваш ник"><br>
 Пароль: <input type=password name=password value="<?=time()%1000;?>"><br>
 Пароль ещё раз: <input type=password name=confirm value="<?=time()%999;?>"><br>
-E-mail: <input type=text name=email value="Ваше мыло@qwerty.ru"><br>
+E-mail: <input type=text name=email value="Ваша@почта"><br>
 <input type=submit value=OK>
 <input type=reset value=Сброс>
 </form>
 <h1>Восстановление пароля</h1>
 <form action=recover.php method=post>
-E-mail: <input type=text name=email><br/>
+E-mail (обязательно): <input type=text name=email><br/>
+Ник (необязательно): <input type=text name=nick><br/>
 <input type=submit value=OK>
 <input type=reset value=Сброс>
 </form>
-Информация о регистрации:
-<ol>
-<li>В форму надо ввести ник, пароль два раза и своё квертимыло.
-<li>Если всё хорошо - на это мыло отправится письмо с подтверждающей ссылкой.
-<li>После клика по ссылке ник будет окончательно зарегистрирован на хабе.
-<li>Если на данный email уже регистрировался хотя бы один ник - то при клике по
-ссылке происходит только подтверждение email-адреса, ник при этом будет зарегистрирован
-на хабе только после утверждения админом хаба (пока это не работает!).
-<li>Поскольку хаб кэширует в памяти список регистрированных ников, может подребоваться
-подождать несколько минут прежде, чем хаб начнёт опознавать зареганный ник.
-<li>Обо всех проблемах пишите на форум.
-<li>Дополнение: если нет подтверждения в течение 3 дней - регистрация отменяется.
-</ol>
-Дополнение: изучение ситуации показало, что половина регистрирующихся так и не проходят
-подтверждение по ссылке из письма. Однако никто так и не пожаловался на форуме.
-<p>
-<? dbconn();
-$res = mysql_query("SELECT count(*) FROM regs WHERE secret=''");
-$row = mysql_fetch_array($res);
-print("Зарегалось: " . $row[0] . " юзеров");
-?>

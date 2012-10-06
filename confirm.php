@@ -22,12 +22,7 @@ if($secret != "") {
   print("Этот ник уже прошёл подтверждение по e-mail.<br>");
 }
 
-$res = mysql_query("SELECT * FROM reglist,regs WHERE reglist.nick=regs.nick AND regs.email=".sqlesc($email)." AND regs.nick!=".sqlesc($nick));
-if(mysql_num_rows($res)>0) {
-  print("На этот email уже регистрировался по крайней мере один ник. Все ники, кроме первого, требуют ручного утверждения администратором хаба.");
-} else {
-  $regdate=time();
-  mysql_query("INSERT INTO `reglist` (`nick`,`class`,`reg_op`,`reg_date`,login_pwd,pwd_crypt,pwd_change) values(".sqlesc($nick).",1,'QWERTYbot','$regdate',".sqlesc($pwd).",1,0)") or print "Ошибка регистрации ника на хабе!";
-}
+$regdate=time();
+mysql_query("INSERT INTO `reglist` (`nick`,`class`,`reg_op`,`reg_date`,login_pwd,pwd_crypt,pwd_change) values(".sqlesc($nick).",1,'$name','$regdate',".sqlesc($pwd).",1,0)") or print "Ошибка регистрации ника на хабе!";
 
 ?>
