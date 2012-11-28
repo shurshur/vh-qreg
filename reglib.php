@@ -56,7 +56,7 @@ function dbconn() {
   mysql_connect($db_host, $db_user, $db_pass) or err("Error in MySQL connect");
   mysql_select_db($db_data) or err("Error in MySQL select db");
   if(isset($db_charset) && $db_charset)
-    mysql_query("set names cp1251") or err("Error in MySQL set charset");
+    mysql_query("set names ".$db_charset) or err("Error in MySQL set charset");
   mysql_query("delete from regs where length(secret)=20 and added < now()-interval 3 day") or err("Error in cleanup");
 }
 
