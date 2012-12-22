@@ -11,7 +11,7 @@ if(isset($_POST['nick']) && isset($_POST['secret']) && isset($_POST['password'])
   $md5 = $_POST['secret'];
   $password = $_POST['password'];
 } else {
-  $nick = $_GET['nick'];
+  $nick = rawurldecode($_GET['nick']);
   $md5 = $_GET['secret'];
 }
 
@@ -34,7 +34,7 @@ if(($secret != "") && ($md5 == md5($secret.$pwd.$secret)))
     header("Content-Type: text/html; charset=Windows-1251");
     ?>
 <form action=recovery.php method=post>
-<input type=hidden name=nick value="<? print htmlentities($nick); ?>">
+<input type=hidden name=nick value="<? print htmlentities($nick,ENT_COMPAT|ENT_HTML401,'cp1251'); ?>">
 <input type=hidden name=secret value="<? print htmlentities($md5); ?>">
 Новый пароль пользователя <? print $nick; ?>:
 <input type=password name=password><br>

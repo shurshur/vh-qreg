@@ -14,6 +14,7 @@ if(mysql_num_rows($res)>1)
 
 $row = mysql_fetch_assoc($res);
 $secret = mksecret();
+$nick = $row["nick"];
 $pwd = $row["pwd"];
 mysql_query("UPDATE regs SET secret=".sqlesc($secret)." WHERE nick=".sqlesc($nick));
 

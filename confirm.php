@@ -2,7 +2,7 @@
 include("reglib.php");
 
 dbconn();
-$nick = $_GET['nick'];
+$nick = rawurldecode($_GET['nick']);
 $md5 = $_GET['secret'];
 
 $res = mysql_query("SELECT * FROM regs WHERE nick=".sqlesc($nick));
