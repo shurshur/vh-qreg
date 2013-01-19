@@ -18,7 +18,9 @@ for ($i = 0; $i < strlen($nick); ++$i)
   if (strpos($allowedchars_nick, $nick[$i]) === false)
     err("Ник содержит запрещённые символы");
 
-if(strlen($nick)<3) err("Минимальная длина ника - 3 символа");
+if(strlen($nick)<$min_nick) err("Минимальная длина ника - $min_nick символа");
+
+if(strlen($nick)<$max_nick) err("Максимальная длина ника - $max_nick символа");
 
 for ($i = 0; $i < strlen($password); ++$i)
   if (strpos($allowedchars_pass, $password[$i]) === false)
