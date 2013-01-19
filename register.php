@@ -20,7 +20,7 @@ for ($i = 0; $i < strlen($nick); ++$i)
 
 if(strlen($nick)<$min_nick) err("Минимальная длина ника - $min_nick символа");
 
-if(strlen($nick)<$max_nick) err("Максимальная длина ника - $max_nick символа");
+if(strlen($nick)>$max_nick) err("Максимальная длина ника - $max_nick символа");
 
 for ($i = 0; $i < strlen($password); ++$i)
   if (strpos($allowedchars_pass, $password[$i]) === false)
