@@ -1,5 +1,19 @@
-<?
+<?php
+header("Content-Type: text/html; charset=utf-8");
 include("reglib.php");
+?>
+<!DOCTYPE html> 
+<html lang=ru>
+<head>
+  <meta charset="utf-8">
+
+  <title>WebReg For VerliHub</title>
+</head>
+
+<body>
+
+<?php
+
 dbconn();
 
 $nick=$_POST['nick'];
@@ -8,50 +22,50 @@ $confirm=$_POST['confirm'];
 $email=$_POST['email'];
 
 if($password!=$confirm)
-  err("Введёные пароли не совпадают!");
+  err("Р’РІРµРґС‘РЅС‹Рµ РїР°СЂРѕР»Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚!");
 
 #if(!preg_match("/^[\w\.\d-]+@(qwerty\.ru|qwertyru\.ru|peredelkino\.ru)$/i",$email))
 if(!checkemail($email))
-  err("Неправильный e-mail $email");
+  err("РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ e-mail $email");
 
 for ($i = 0; $i < strlen($nick); ++$i)
   if (strpos($allowedchars_nick, $nick[$i]) === false)
-    err("Ник содержит запрещённые символы");
+    err("РќРёРє СЃРѕРґРµСЂР¶РёС‚ Р·Р°РїСЂРµС‰С‘РЅРЅС‹Рµ СЃРёРјРІРѕР»С‹");
 
-if(strlen($nick)<$min_nick) err("Минимальная длина ника - $min_nick символа");
+if(strlen($nick)<$min_nick) err("РњРёРЅРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° РЅРёРєР° - $min_nick СЃРёРјРІРѕР»Р°");
 
-if(strlen($nick)>$max_nick) err("Максимальная длина ника - $max_nick символа");
+if(strlen($nick)>$max_nick) err("РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° РЅРёРєР° - $max_nick СЃРёРјРІРѕР»Р°");
 
 for ($i = 0; $i < strlen($password); ++$i)
   if (strpos($allowedchars_pass, $password[$i]) === false)
-    err("Пароль содержит запрещённые символы, допускаются только английские буквы и цифры");
+    err("РџР°СЂРѕР»СЊ СЃРѕРґРµСЂР¶РёС‚ Р·Р°РїСЂРµС‰С‘РЅРЅС‹Рµ СЃРёРјРІРѕР»С‹, РґРѕРїСѓСЃРєР°СЋС‚СЃСЏ С‚РѕР»СЊРєРѕ Р°РЅРіР»РёР№СЃРєРёРµ Р±СѓРєРІС‹ Рё С†РёС„СЂС‹");
 
-if(strlen($password)<5) err("Минимальная длина пароля - 5 символов");
+if(strlen($password)<5) err("РњРёРЅРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° РїР°СЂРѕР»СЏ - 5 СЃРёРјРІРѕР»РѕРІ");
 
 $res = mysql_query("SELECT * FROM reglist WHERE nick=".sqlesc($nick));
-if(mysql_num_rows($res)>0) err("Такой ник уже занят");
+if(mysql_num_rows($res)>0) err("РўР°РєРѕР№ РЅРёРє СѓР¶Рµ Р·Р°РЅСЏС‚");
 
 $res = mysql_query("SELECT * FROM regs WHERE nick=".sqlesc($nick));
-if(mysql_num_rows($res)>0) err("Такой ник уже занят, но ещё не прошёл регистрацию");
+if(mysql_num_rows($res)>0) err("РўР°РєРѕР№ РЅРёРє СѓР¶Рµ Р·Р°РЅСЏС‚, РЅРѕ РµС‰С‘ РЅРµ РїСЂРѕС€С‘Р» СЂРµРіРёСЃС‚СЂР°С†РёСЋ");
 
 if(!$allow_multi) {
   $res = mysql_query("SELECT * FROM regs WHERE email=".sqlesc($email));
   if(mysql_num_rows($res)>0)
-    err("На этот e-mail уже зарегистрирован один пользователь.");
+    err("РќР° СЌС‚РѕС‚ e-mail СѓР¶Рµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ РѕРґРёРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ.");
 }
 
 $pwd = crypt($password,$password[0].$password[1]);
 $secret = mksecret();
 mysql_query("INSERT INTO regs (nick,email,secret,pwd) VALUES (".sqlesc($nick).",".sqlesc($email).",".sqlesc($secret).",".sqlesc($pwd).")");
-#err("Тут будет отправка на $email");
+#err("РўСѓС‚ Р±СѓРґРµС‚ РѕС‚РїСЂР°РІРєР° РЅР° $email");
 
 $link = mklink("confirm.php",$nick,$pwd,$secret);
 $body= <<<EOF
-Вы запросили регистрацию на $name пользователя $nick.
+Р’С‹ Р·Р°РїСЂРѕСЃРёР»Рё СЂРµРіРёСЃС‚СЂР°С†РёСЋ РЅР° $name РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ $nick.
 
-Если вы этого не делали, просто проигнорируйте это письмо. Запрос был отправлен с адреса {$_SERVER["REMOTE_ADDR"]}. Пожалуйста, не отвечайте на это письмо - оно было послано автоматически.
+Р•СЃР»Рё РІС‹ СЌС‚РѕРіРѕ РЅРµ РґРµР»Р°Р»Рё, РїСЂРѕСЃС‚Рѕ РїСЂРѕРёРіРЅРѕСЂРёСЂСѓР№С‚Рµ СЌС‚Рѕ РїРёСЃСЊРјРѕ. Р—Р°РїСЂРѕСЃ Р±С‹Р» РѕС‚РїСЂР°РІР»РµРЅ СЃ Р°РґСЂРµСЃР° {$_SERVER["REMOTE_ADDR"]}. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РЅРµ РѕС‚РІРµС‡Р°Р№С‚Рµ РЅР° СЌС‚Рѕ РїРёСЃСЊРјРѕ - РѕРЅРѕ Р±С‹Р»Рѕ РїРѕСЃР»Р°РЅРѕ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.
 
-Чтобы завершить регистрацию, нажмите на ссылку:
+Р§С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ СЂРµРіРёСЃС‚СЂР°С†РёСЋ, РЅР°Р¶РјРёС‚Рµ РЅР° СЃСЃС‹Р»РєСѓ:
 
 $link
 
@@ -60,6 +74,8 @@ EOF
 
 mail($email, "$name registration confirmation", $body, "From: $name <$from>\r\nContent-Type: text/plain; charset=Windows-1251", "-f$from");
 
-header("Content-Type: text/html; charset=Windows-1251");
-print("Подтверждение регистрации отправлено на адрес $email, проверяйте почту.");
+print("РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СЂРµРіРёСЃС‚СЂР°С†РёРё РѕС‚РїСЂР°РІР»РµРЅРѕ РЅР° Р°РґСЂРµСЃ $email, РїСЂРѕРІРµСЂСЏР№С‚Рµ РїРѕС‡С‚Сѓ.");
 ?>
+
+</body>
+</html>

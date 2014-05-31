@@ -1,21 +1,36 @@
 <?
-header("Content-Type: text/html; charset=Windows-1251");
+header("Content-Type: text/html; charset=utf-8");
 include("reglib.php");
 ?>
-<title>Регистрация</title>
-<h1>Регистрация</h1>
-<form action=register.php method=post>
-Ник: <input type=text name=nick value="Ваш ник"><br>
-Пароль: <input type=password name=password value="<?=time()%1000;?>"><br>
-Пароль ещё раз: <input type=password name=confirm value="<?=time()%999;?>"><br>
-E-mail: <input type=text name=email value="Ваша@почта"><br>
+<!DOCTYPE html> 
+<html lang=ru>
+<head>
+  <meta charset="utf-8">
+
+  <title>WebReg For VerliHub</title>
+</head>
+
+<body>
+
+<h1>Р РµРіРёСЃС‚СЂР°С†РёСЏ</h1>
+
+<form action="register.php" method="post">
+РќРёРє: <input type=text name=nick value="Р’Р°С€ РЅРёРє"><br>
+РџР°СЂРѕР»СЊ: <input type=password name=password value="<?=time()%1000;?>"><br>
+РџР°СЂРѕР»СЊ РµС‰С‘ СЂР°Р·: <input type=password name=confirm value="<?=time()%999;?>"><br>
+E-mail: <input type=text name=email value="Р’Р°С€Р°@РїРѕС‡С‚Р°"><br>
 <input type=submit value=OK>
-<input type=reset value=Сброс>
+<input type=reset value=РЎР±СЂРѕСЃ>
 </form>
-<h1>Восстановление пароля</h1>
+
+<h1>Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїР°СЂРѕР»СЏ</h1>
+
 <form action=recover.php method=post>
-E-mail (обязательно): <input type=text name=email><br/>
-Ник (необязательно): <input type=text name=nick><br/>
+E-mail (РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ): <input type=text name=email><br/>
+РќРёРє (РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ): <input type=text name=nick><br/>
 <input type=submit value=OK>
-<input type=reset value=Сброс>
+<input type=reset value=РЎР±СЂРѕСЃ>
 </form>
+
+</body>
+</html>

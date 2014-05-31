@@ -1,5 +1,18 @@
-<?php
+<?
+header("Content-Type: text/html; charset=utf-8");
 include("reglib.php");
+?>
+<!DOCTYPE html> 
+<html lang=ru>
+<head>
+  <meta charset="utf-8">
+
+  <title>WebReg For VerliHub</title>
+</head>
+
+<body>
+
+<?php
 dbconn();
 
 $email = $_POST['email'];
@@ -7,10 +20,10 @@ $nick = $_POST['nick'];
 
 $res = mysql_query("SELECT * FROM regs WHERE email=".sqlesc($email).($nick?(" AND nick=".sqlesc($nick)):""));
 if(mysql_num_rows($res)<1)
-  err("Нет пользователя с таким e-mail");
+  err("РќРµС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЃ С‚Р°РєРёРј e-mail");
 
 if(mysql_num_rows($res)>1)
-  err("Больше одного пользователя с таким e-mail. Для восстановления укажите ник.");
+  err("Р‘РѕР»СЊС€Рµ РѕРґРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЃ С‚Р°РєРёРј e-mail. Р”Р»СЏ РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ СѓРєР°Р¶РёС‚Рµ РЅРёРє.");
 
 $row = mysql_fetch_assoc($res);
 $secret = mksecret();
@@ -20,11 +33,11 @@ mysql_query("UPDATE regs SET secret=".sqlesc($secret)." WHERE nick=".sqlesc($nic
 
 $link = mklink("recovery.php",$nick,$pwd,$secret);
 $body= <<<EOF
-Вы запросили восстановления пароля на $name пользователя $nick.
+Р’С‹ Р·Р°РїСЂРѕСЃРёР»Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ РїР°СЂРѕР»СЏ РЅР° $name РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ $nick.
 
-Если вы этого не делали, просто проигнорируйте это письмо. Запрос был отправлен с адреса {$_SERVER["REMOTE_ADDR"]}. Пожалуйста, не отвечайте на это письмо - оно было послано автоматически.
+Р•СЃР»Рё РІС‹ СЌС‚РѕРіРѕ РЅРµ РґРµР»Р°Р»Рё, РїСЂРѕСЃС‚Рѕ РїСЂРѕРёРіРЅРѕСЂРёСЂСѓР№С‚Рµ СЌС‚Рѕ РїРёСЃСЊРјРѕ. Р—Р°РїСЂРѕСЃ Р±С‹Р» РѕС‚РїСЂР°РІР»РµРЅ СЃ Р°РґСЂРµСЃР° {$_SERVER["REMOTE_ADDR"]}. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РЅРµ РѕС‚РІРµС‡Р°Р№С‚Рµ РЅР° СЌС‚Рѕ РїРёСЃСЊРјРѕ - РѕРЅРѕ Р±С‹Р»Рѕ РїРѕСЃР»Р°РЅРѕ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.
 
-Чтобы завершить востановление пароля, нажмите на ссылку:
+Р§С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ РІРѕСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїР°СЂРѕР»СЏ, РЅР°Р¶РјРёС‚Рµ РЅР° СЃСЃС‹Р»РєСѓ:
 
 $link
 
@@ -33,6 +46,8 @@ EOF
 
 mail($email, "$name password recovery confirmation", $body, "From: $name <$from>\r\nContent-Type: text/plain; charset=Windows-1251", "-f$from");
 
-header("Content-Type: text/html; charset=Windows-1251");
-print("Подтверждение восстановления пароля отправлено на адрес $email, проверяйте почту.");
+print("РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ РїР°СЂРѕР»СЏ РѕС‚РїСЂР°РІР»РµРЅРѕ РЅР° Р°РґСЂРµСЃ $email, РїСЂРѕРІРµСЂСЏР№С‚Рµ РїРѕС‡С‚Сѓ.");
 ?>
+
+</body>
+</html>
