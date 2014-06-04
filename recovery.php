@@ -1,5 +1,18 @@
-<?
+<?php
+header("Content-Type: text/html; charset=utf-8");
 include("reglib.php");
+?>
+<!DOCTYPE html> 
+<html lang=ru>
+<head>
+  <meta charset="utf-8">
+
+  <title>WebReg For VerliHub</title>
+</head>
+
+<body>
+
+<?php
 
 dbconn();
 
@@ -16,7 +29,7 @@ if(isset($_POST['nick']) && isset($_POST['secret']) && isset($_POST['password'])
 }
 
 $res = mysql_query("SELECT * FROM regs WHERE nick=".sqlesc($nick));
-if(mysql_num_rows($res)<1) err("Нет такого ника среди запросов на регистрацию");
+if(mysql_num_rows($res)<1) err("РќРµС‚ С‚Р°РєРѕРіРѕ РЅРёРєР° СЃСЂРµРґРё Р·Р°РїСЂРѕСЃРѕРІ РЅР° СЂРµРіРёСЃС‚СЂР°С†РёСЋ");
 
 $row = mysql_fetch_assoc($res);
 $pwd = $row['pwd'];
@@ -26,24 +39,27 @@ $email = $row['email'];
 if(($secret != "") && ($md5 == md5($secret.$pwd.$secret)))
   if($final) {
     $pwd = crypt($password,$password[0].$password[1]);
-    mysql_query("UPDATE regs SET secret='',pwd=".sqlesc($pwd)." WHERE nick=".sqlesc($nick)) or err("Ошибка выполнения операции");
-    mysql_query("UPDATE reglist SET login_pwd=".sqlesc($pwd)." WHERE nick=".sqlesc($nick)) or err("Ошибка изменения пароля");
+    mysql_query("UPDATE regs SET secret='',pwd=".sqlesc($pwd)." WHERE nick=".sqlesc($nick)) or err("РћС€РёР±РєР° РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё");
+    mysql_query("UPDATE reglist SET login_pwd=".sqlesc($pwd)." WHERE nick=".sqlesc($nick)) or err("РћС€РёР±РєР° РёР·РјРµРЅРµРЅРёСЏ РїР°СЂРѕР»СЏ");
     header("Content-Type: text/html; charset=Windows-1251");
-    print("Пароль изменён.<br>");
+    print("РџР°СЂРѕР»СЊ РёР·РјРµРЅС‘РЅ.<br>");
   } else {
     header("Content-Type: text/html; charset=Windows-1251");
     ?>
 <form action=recovery.php method=post>
 <input type=hidden name=nick value="<? print htmlentities($nick,ENT_COMPAT|ENT_HTML401,'cp1251'); ?>">
 <input type=hidden name=secret value="<? print htmlentities($md5); ?>">
-Новый пароль пользователя <? print $nick; ?>:
+РќРѕРІС‹Р№ РїР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ <? print $nick; ?>:
 <input type=password name=password><br>
 <input type=submit value=OK>
-<input type=reset value=Сброс>
+<input type=reset value=РЎР±СЂРѕСЃ>
 </form>
     <?
   }
 else
-  err("Неправильный secret");
+  err("РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ secret");
 
 ?>
+
+</body>
+</html>

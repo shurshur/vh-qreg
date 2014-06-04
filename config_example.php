@@ -1,4 +1,5 @@
 <?php
+// utf-8
 
 $base = "http://test.ru/qreg";
 $name = "TEST HUB";
@@ -11,9 +12,10 @@ $db_host = "localhost";
 $db_data = "verlihubdata";
 $db_user = "verlihubuser";
 $db_pass = "verlihubpass";
-$db_charset = "cp1251";
+$db_charset = "utf8";
+//$db_charset = "cp1251";
 
-$allowedchars_nick = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789()[]{}_-+=.ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùúûüýþÿ,@#^~/'."\\'".'©*"';
+$allowedchars_nick = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789()[]{}_-+=.ÐÐ‘Ð’Ð“Ð”Ð•ÐÐ–Ð—Ð˜Ð™ÐšÐ›ÐœÐÐžÐŸÐ Ð¡Ð¢Ð£Ð¤Ð¥Ð¦Ð§Ð¨Ð©ÐªÐ«Ð¬Ð­Ð®Ð¯Ð°Ð±Ð²Ð³Ð´ÐµÑ‘Ð¶Ð·Ð¸Ð¹ÐºÐ»Ð¼Ð½Ð¾Ð¿Ñ€ÑÑ‚ÑƒÑ„Ñ…Ñ†Ñ‡ÑˆÑ‰ÑŠÑ‹ÑŒÑÑŽÑ,@#^~/'."\\'".'Â©*"';
 $allowedchars_pass = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 $min_nick = 3;
